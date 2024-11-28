@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click the Button Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #score-board {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        #timer {
+            margin-top: 10px;
+            font-size: 32px;
+            color: #ff0000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Click the Button Game</h1>
+        <button id="click-btn">Click Me!</button>
+        <div id="score-board">Score: 0</div>
+        <div id="timer">Time left: 10</div>
+    </div>
+
+    <script>
+        // Game variables
+        let score = 0;
+        let timeLeft = 10;
+        let gameInterval;
+        let countdownInterval;
+        const scoreBoard = document.getElementById('score-board');
+        const timer = document.getElementById('timer');
+        const clickBtn = document.getElementById('click-btn');
+
+        // Start the game
+        function startGame() {
+            score = 0;
+            timeLeft = 10;
+            scoreBoard.textContent = "Score: " + score;
+            timer.textContent = "Time left: " + timeLeft;
+
+            // Enable the button
+            clickBtn.disabled = false;
+            clickBtn.textContent = "Click Me!";
+
+            // Start the countdown timer
+            countdownInterval = setInterval(updateTimer, 1000);
+
+            // Start the game interval
+            gameInterval = setInterval(updateGame, 1000);
+        }
+
+        // Update the score when the button is clicked
+        clickBtn.addEventListener('click', () => {
+            if (timeLeft > 0) {
+                score++;
+                scoreBoard.textContent = "Score: " + score;
+            }
+        });
+
+        // Update the countdown timer
+        function updateTimer() {
+            timeLeft--;
+            timer.textContent = "Time left: " + timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                clearInterval(gameInterval);
+                clickBtn.disabled = true;
+                clickBtn.textContent = "Game Over! Your Score: " + score;
+            }
+        }
+
+        // Function to handle game updates
+        function updateGame() {
+            if (timeLeft <= 0) {
+                clearInterval(gameInterval);
+            }
+        }
+
+        // Initialize the game when the page loads
+        window.onload = startGame;
+    </script>
+</body>
+</html>
